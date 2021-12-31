@@ -5,6 +5,30 @@ import Link from "next/link";
 import { databaseId } from "./index.js";
 import styles from "./post.module.css";
 import { CopyBlock, nord } from "react-code-blocks";
+import { HiExternalLink } from "react-icons/hi";
+let allPages = null;
+
+const getSlugFromId = (pageId) => {
+  const page = allPages.find((page) => page.id === pageId);
+  console.log(page.properties);
+  return page.properties.Slug.rich_text[0]?.plain_text;
+};
+
+const TextContent = (textValue) => {
+  const { text } = textValue;
+  if (textValue.type === "mention") {
+    console.log(allPages);
+    return (
+      <Link href={`/${getSlugFromId(textValue.mention.page.id)}`}>
+        <a style={{ fontWeight: "bold", color: "black", fontSize: "1.1rem" }}>
+          <HiExternalLink style={{ fontSize: "1.5rem" }} />
+          <span>{textValue.plain_text} </span>
+        </a>
+      </Link>
+    );
+  }
+  return text.link ? <a href={text.link.url}>{text?.content}</a> : text.content;
+};
 
 export const Text = ({ text }) => {
   if (!text) {
@@ -26,7 +50,7 @@ export const Text = ({ text }) => {
         ].join(" ")}
         style={color !== "default" ? { color } : {}}
       >
-        {text.link ? <a href={text.link.url}>{text.content}</a> : text.content}
+        {TextContent(value)}
       </span>
     );
   });
@@ -119,7 +143,9 @@ const renderBlock = (block) => {
   }
 };
 
-export default function Post({ page, blocks }) {
+export default function Post({ page, blocks, database }) {
+  allPages = database;
+
   if (!page || !blocks) {
     return <div />;
   }
@@ -195,6 +221,7 @@ export const getStaticProps = async (context) => {
   return {
     props: {
       page,
+      database,
       blocks: blocksWithChildren,
     },
     revalidate: 1,
