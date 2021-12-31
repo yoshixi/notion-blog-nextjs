@@ -6,6 +6,7 @@ import { databaseId } from "./index.js";
 import styles from "./post.module.css";
 import { CopyBlock, nord } from "react-code-blocks";
 import { HiExternalLink } from "react-icons/hi";
+import { SITE_NAME } from "../lib/constraints";
 let allPages = null;
 
 const getSlugFromId = (pageId) => {
@@ -145,6 +146,7 @@ const renderBlock = (block) => {
 
 export default function Post({ page, blocks, database }) {
   allPages = database;
+  console.log(blocks[0]);
 
   if (!page || !blocks) {
     return <div />;
@@ -154,6 +156,30 @@ export default function Post({ page, blocks, database }) {
       <Head>
         <title>{page.properties.Name.title[0].plain_text}</title>
         <link rel="icon" href="/favicon.ico" />
+        <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+        <meta name="description" content={blocks[0]?.title} />
+        <meta
+          property="og:url"
+          content={`https://www.yoshixj.com/${page.properties.Slug.rich_text[0]?.plain_text}`}
+        />
+        <meta
+          property="og:title"
+          content={page.properties.Name.title[0].plain_text}
+        />
+        <meta property="og:site_name" content={SITE_NAME} />
+        <meta property="og:description" content={SITE_NAME} />
+        <meta property="og:type" content="website" />
+        <meta
+          property="og:image"
+          content="https://www.yoshixj.com/the_yoshixj_site.png"
+        />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" />
+        <link
+          href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900&amp;display=swap"
+          rel="stylesheet"
+        />
       </Head>
 
       <article className={styles.container}>
