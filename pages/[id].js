@@ -11,14 +11,12 @@ let allPages = null;
 
 const getSlugFromId = (pageId) => {
   const page = allPages.find((page) => page.id === pageId);
-  console.log(page.properties);
   return page.properties.Slug.rich_text[0]?.plain_text;
 };
 
 const TextContent = (textValue) => {
   const { text } = textValue;
   if (textValue.type === "mention") {
-    console.log(allPages);
     return (
       <Link href={`/${getSlugFromId(textValue.mention.page.id)}`}>
         <a style={{ fontWeight: "bold", color: "black", fontSize: "1.1rem" }}>
@@ -146,7 +144,6 @@ const renderBlock = (block) => {
 
 export default function Post({ page, blocks, database }) {
   allPages = database;
-  console.log(blocks[0]);
 
   if (!page || !blocks) {
     return <div />;
@@ -157,7 +154,10 @@ export default function Post({ page, blocks, database }) {
         <title>{page.properties.Name.title[0].plain_text}</title>
         <link rel="icon" href="/favicon.ico" />
         <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-        <meta name="description" content={blocks[0]?.title} />
+        <meta
+          name="description"
+          content={page.properties.Name.title[0].plain_text}
+        />
         <meta
           property="og:url"
           content={`https://www.yoshixj.com/${page.properties.Slug.rich_text[0]?.plain_text}`}
