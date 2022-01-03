@@ -135,6 +135,10 @@ const renderBlock = (block) => {
           />
         );
       });
+    case "divider":
+      return <hr key={id} />;
+    case "quote":
+      return <blockquote key={id}>{value.text[0].plain_text}</blockquote>;
     default:
       return `❌ Unsupported block (${
         type === "unsupported" ? "unsupported by Notion API" : type
