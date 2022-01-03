@@ -4,6 +4,7 @@ import { getDatabase, getPage, getBlocks } from "../lib/notion";
 import Link from "next/link";
 import { databaseId } from "./index.js";
 import styles from "./post.module.css";
+import { CopyBlock, nord } from "react-code-blocks";
 
 export const Text = ({ text }) => {
   if (!text) {
@@ -92,7 +93,7 @@ const renderBlock = (block) => {
     case "image":
       const src =
         value.type === "external" ? value.external.url : value.file.url;
-      const caption = value.caption ? value.caption[0].plain_text : "";
+      const caption = value.caption ? value.caption[0]?.plain_text : "";
       return (
         <figure>
           <img src={src} alt={caption} />
@@ -103,6 +104,18 @@ const renderBlock = (block) => {
       return <hr key={id} />;
     case "quote":
       return <blockquote key={id}>{value.text[0].plain_text}</blockquote>;
+    case "code":
+      const language = value.language;
+      return value.text.map((text) => {
+        return (
+          <CopyBlock
+            text={text.plain_text}
+            language={language}
+            showLineNumbers={false}
+            theme={nord}
+          />
+        );
+      });
     default:
       return `❌ Unsupported block (${
         type === "unsupported" ? "unsupported by Notion API" : type
