@@ -43,6 +43,20 @@
   border-radius: 2px;
 }
 
+.blockquote {
+  position: relative;
+}
+
+.blockquote::after {
+  position: absolute;
+  content: "";
+  width: 2px;
+  height: 100%;
+  left: -2rem;
+  background: rgb(85, 85, 85);
+  top: 0;
+}
+
 @media (prefers-color-scheme: dark) {
   .code {
     background-color: rgb(217, 228, 221);

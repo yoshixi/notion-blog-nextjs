@@ -95,7 +95,7 @@ const renderBlock = (block) => {
       return (
         <div>
           <label htmlFor={id}>
-            <input type="checkbox" id={id} defaultChecked={value.checked} />{" "}
+            <input t ype="checkbox" id={id} defaultChecked={value.checked} />{" "}
             <Text text={value.text} />
           </label>
         </div>
@@ -138,7 +138,16 @@ const renderBlock = (block) => {
     case "divider":
       return <hr key={id} />;
     case "quote":
-      return <blockquote key={id}>{value.text[0].plain_text}</blockquote>;
+      return (
+        <blockquote className={styles.blockquote} key={id}>
+          {value.text[0].plain_text.split("\n").map((it, i) => (
+            <span key={`x-${i}`}>
+              {it}
+              <br />
+            </span>
+          ))}
+        </blockquote>
+      );
     default:
       return `❌ Unsupported block (${
         type === "unsupported" ? "unsupported by Notion API" : type
