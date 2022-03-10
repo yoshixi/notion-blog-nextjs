@@ -1,5 +1,6 @@
 import { Fragment } from "react";
 import Head from "next/head";
+import NextImage from "next/image";
 import { getDatabase, getPage, getBlocks } from "../lib/notion";
 import Link from "next/link";
 import { databaseId } from "./index.js";
@@ -7,6 +8,7 @@ import styles from "./post.module.css";
 import { CopyBlock, nord } from "react-code-blocks";
 import { HiExternalLink } from "react-icons/hi";
 import { SITE_NAME } from "../lib/constraints";
+import { imagePath, downloadImageIfNeed } from '../lib/saveImage'
 let allPages = null;
 
 const getSlugFromId = (pageId) => {
@@ -55,6 +57,16 @@ export const Text = ({ text }) => {
   });
 };
 
+const downloadImage = async (block) => {
+  const { type, id } = block;
+  const value = block[type];
+  if (!(type === "image")) return
+
+  const url =
+    value.type === "external" ? value.external.url : value.file.url;
+  await downloadImageIfNeed(url, id)
+}
+
 const renderBlock = (block) => {
   const { type, id } = block;
   const value = block[type];
@@ -68,21 +80,21 @@ const renderBlock = (block) => {
       );
     case "heading_1":
       return (
-        <h1>
-          <Text text={value.text} />
-        </h1>
-      );
-    case "heading_2":
-      return (
         <h2>
           <Text text={value.text} />
         </h2>
       );
-    case "heading_3":
+    case "heading_2":
       return (
         <h3>
           <Text text={value.text} />
         </h3>
+      );
+    case "heading_3":
+      return (
+        <h4>
+          <Text text={value.text} />
+        </h4>
       );
     case "bulleted_list_item":
     case "numbered_list_item":
@@ -114,14 +126,17 @@ const renderBlock = (block) => {
     case "child_page":
       return <p>{value.title}</p>;
     case "image":
-      const src =
+      const url =
         value.type === "external" ? value.external.url : value.file.url;
       const caption = value.caption ? value.caption[0]?.plain_text : "";
+      const src = imagePath(id)
       return (
-        <figure>
-          <img src={src} alt={caption} />
-          {caption && <figcaption>{caption}</figcaption>}
+        <>
+        <figure style={{ position: 'relative', width: '100%', minHeight: '300px' }}>
+          <NextImage layout="fill" objectFit='contain' src={`/blogImages/${id}.png`} alt={caption} />
+          {caption && <figcaption style={{ position: 'absolute', bottom: 0, right: 0 }}>{caption}</figcaption>}
         </figure>
+        </>
       );
     case "code":
       const language = value.language;
@@ -155,7 +170,7 @@ const renderBlock = (block) => {
   }
 };
 
-export default function Post({ page, blocks, database }) {
+const Post = ({ page, blocks, database }) => {
   allPages = database;
 
   if (!page || !blocks) {
@@ -211,6 +226,7 @@ export default function Post({ page, blocks, database }) {
     </div>
   );
 }
+export default Post
 
 export const getStaticPaths = async () => {
   const database = await getDatabase(databaseId);
@@ -235,6 +251,12 @@ export const getStaticProps = async (context) => {
   const page = await getPage(id);
   const blocks = await getBlocks(id);
 
+  await Promise.all (
+    blocks.map(async (block) => {
+      await downloadImage(block);
+    })
+  )
+
   // Retrieve block children for nested blocks (one level deep), for example toggle blocks
   // https://developers.notion.com/docs/working-with-page-content#reading-nested-blocks
   const childBlocks = await Promise.all(
@@ -247,6 +269,12 @@ export const getStaticProps = async (context) => {
         };
       })
   );
+  await Promise.all (
+    childBlocks.map(async (block) => {
+      await downloadImage(block);
+    })
+  )
+
   const blocksWithChildren = blocks.map((block) => {
     // Add child blocks if the block should contain children but none exists
     if (block.has_children && !block[block.type].children) {
