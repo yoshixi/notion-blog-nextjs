@@ -19,7 +19,7 @@ export default function Home({ posts, externalPosts }) {
       <main className={styles.container}>
         <header className={styles.header}>
           <div className={styles.logos}></div>
-          <h1>Keep it fun...</h1>
+          <h1>Keep it fun</h1>
           <p>
             このサイトは @yoshixi の個人サイトです。 @yoshixi
             は北関東出身、東京で働いているソフトウェアエンジニーアです。 経歴は
