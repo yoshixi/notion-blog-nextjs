@@ -12,7 +12,7 @@ export default function Home({ posts, externalPosts }) {
   return (
     <div>
       <Head>
-        <title>THE YOSHIXJ SITE</title>
+        <title>Keep it fun</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
@@ -24,7 +24,7 @@ export default function Home({ posts, externalPosts }) {
             このサイトは @yoshixi の個人サイトです。 @yoshixi
             は北関東出身、東京で働いているソフトウェアエンジニーアです。 経歴は
             <a
-              href="https://github.com/yoshixj/resume/blob/master/README.md"
+              href="https://github.com/yoshixi/resume/blob/master/README.md"
               target="_blank"
             >
               こちら

@@ -213,7 +213,7 @@ const Post = ({ page, blocks, database }) => {
         />
         <meta
           property="og:url"
-          content={`https://www.yoshixj.com/${page.properties.Slug.rich_text[0]?.plain_text}`}
+          content={`https://www.yoshixi.dev/${page.properties.Slug.rich_text[0]?.plain_text}`}
         />
         <meta
           property="og:title"
@@ -224,7 +224,7 @@ const Post = ({ page, blocks, database }) => {
         <meta property="og:type" content="website" />
         <meta
           property="og:image"
-          content="https://www.yoshixj.com/the_yoshixj_site.png"
+          content="https://www.yoshixi.dev/the_yoshixi_site.png"
         />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
