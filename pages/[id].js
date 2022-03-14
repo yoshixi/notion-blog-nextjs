@@ -67,6 +67,25 @@ const downloadImage = async (block) => {
   await downloadImageIfNeed(url, id)
 }
 
+const renderNestedList = (block) => {
+  const { type } = block;
+  const value = block[type];
+  const isNumberedList = value.children[0].type === 'numbered_list_item'
+
+  if (isNumberedList) {
+    return (
+      <ol>
+        {value.children.map((block) => renderBlock(block))}
+      </ol>
+    )
+  }
+  return (
+    <ul>
+      {value.children.map((block) => renderBlock(block))}
+    </ul>
+  )
+}
+
 const renderBlock = (block) => {
   const { type, id } = block;
   const value = block[type];
@@ -74,7 +93,7 @@ const renderBlock = (block) => {
   switch (type) {
     case "paragraph":
       return (
-        <p>
+        <p style={{ minHeight: '1px' }}>
           <Text text={value.text} />
         </p>
       );
@@ -101,6 +120,7 @@ const renderBlock = (block) => {
       return (
         <li>
           <Text text={value.text} />
+          {!!value.children && renderNestedList(block)}
         </li>
       );
     case "to_do":
@@ -187,6 +207,13 @@ const renderBlock = (block) => {
           </div>
           {caption_file && <figcaption>{caption_file}</figcaption>}
         </figure>
+      );
+    case "bookmark":
+      const href = value.url
+      return (
+        <a href={ href } target="_brank" className={styles.bookmark}>
+          { href }
+        </a>
       );
     default:
       return `❌ Unsupported block (${
