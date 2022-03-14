@@ -1,0 +1,54 @@
+@font-face {
+  font-family: 'Noto Sans';
+  src: url('./fonts/NotoSansJP-Thin.otf') format("opentype");
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Noto Sans';
+  src: url('./fonts/NotoSansJP-Regular.otf') format("opentype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Noto Sans';
+  src: url('./fonts/NotoSansJP-Medium.otf') format("opentype");
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Noto Sans';
+  src: url('./fonts/NotoSansJP-Bold.otf') format("opentype");
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Noto Sans';
+  src: url('./fonts/NotoSansJP-Black.otf') format('opentype');
+  font-weight: 900;
+  font-style: normal;
+}
+
+html {
+  font-size: 14px;
+}
+html, body {
+  font-family: Noto Sans;
+  font-weight: 400;
+}
+
+h1, h2, h3 {
+  font-weight: bold;
+}
+
+h1, h2, h3 span {
+  font-weight: bold;
+}
+
+ul, li {
+  margin-bottom: 4px;
+}
