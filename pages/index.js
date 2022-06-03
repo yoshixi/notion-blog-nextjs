@@ -21,7 +21,9 @@ export default function Home({ posts, externalPosts }) {
           <div className={styles.logos}></div>
           <h1>Keep it fun</h1>
           <p>
-            このサイトは @yoshixi の個人サイトです。 @yoshixi
+            このサイトは <a href="https://twitter.com/yoshixi_dev"
+              target="_blank">@yoshixi</a> の個人サイトです。 <a href="https://twitter.com/yoshixi_dev"
+              target="_blank">@yoshixi</a>
             は北関東出身、東京で働いているソフトウェアエンジニーアです。 経歴は
             <a
               href="https://github.com/yoshixi/resume/blob/master/README.md"
