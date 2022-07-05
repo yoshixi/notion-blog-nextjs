@@ -1,8 +1,8 @@
 import Head from "next/head";
 import Link from "next/link";
-import { getDatabase } from "../lib/notion";
+import { getDatabase } from "../../lib/notion";
 import { Text } from "./[id].js";
-import styles from "./index.module.css";
+import styles from "./../index.module.css";
 
 export const databaseId = process.env.NOTION_DATABASE_ID;
 const externalDatabaseId = process.env.NOTION_EXTERNAL_POSTS_DATABASE_ID;
@@ -21,10 +21,10 @@ export default function Home({ posts, externalPosts }) {
           <div className={styles.logos}></div>
           <h1>Keep it fun</h1>
           <div style={{ marginBottom: "40px" }}>
-            <Link href={"/en"}>
+            <Link href={"/"}>
               <a>
                 <span className={styles.pageLink}>
-                  English Site is here 🇺🇸;
+                  日本語のサイトはこちら 🇯🇵
                 </span>
               </a>
             </Link>
@@ -33,29 +33,23 @@ export default function Home({ posts, externalPosts }) {
 
         <section className={styles.section}>
           <h2 className={styles.heading}>Profile</h2>
+          <p>This is personal website of @yoshixi.</p>
           <p>
-            このサイトは{" "}
-            <a href="https://twitter.com/yoshixi_dev" target="_blank">
-              @yoshixi
-            </a>{" "}
-            の個人サイトです。{" "}
-            <a href="https://twitter.com/yoshixi_dev" target="_blank">
-              @yoshixi
-            </a>
-            は北関東出身、東京で働いているソフトウェアエンジニーアです。 経歴は
+            Hey! I'm Yoshiki, a software engineer living in Tokyo, Japan.
+            <br></br> If you want to know more about me, please check out{" "}
             <a
-              href="https://github.com/yoshixi/resume/blob/master/README.md"
+              href="https://github.com/yoshixi/resume/blob/master/README.en.md"
               target="_blank"
             >
-              こちら
+              my resume
             </a>
-            をご確認ください。
+            .
           </p>
         </section>
 
         <section className={styles.section}>
           <h2 className={styles.heading}>POSTS</h2>
-          <div style={{ marginBottom: "3rem" }}>
+          {/* <div style={{ marginBottom: "3rem" }}>
             <details>
               <summary style={{ height: "20px" }}>
                 <span className={styles.summary}> External POSTS </span>
@@ -93,7 +87,7 @@ export default function Home({ posts, externalPosts }) {
                 })}
               </ol>
             </details>
-          </div>
+          </div> */}
           <ol className={styles.posts}>
             {posts.map((post) => {
               const date = new Date(
@@ -107,7 +101,7 @@ export default function Home({ posts, externalPosts }) {
                 <li key={post.id} className={styles.post}>
                   <h3 className={styles.postTitle}>
                     <Link
-                      href={`/${post.properties.Slug.rich_text[0]?.plain_text}`}
+                      href={`/en/${post.properties.Slug.rich_text[0]?.plain_text}`}
                     >
                       <a>
                         <Text text={post.properties.Name?.title} />
@@ -117,7 +111,7 @@ export default function Home({ posts, externalPosts }) {
 
                   <p className={styles.postDescription}>{date}</p>
                   <Link
-                    href={`/${post.properties.Slug.rich_text[0]?.plain_text}`}
+                    href={`/en/${post.properties.Slug.rich_text[0]?.plain_text}`}
                   >
                     <a> Read post →</a>
                   </Link>
@@ -143,8 +137,8 @@ export const getStaticProps = async () => {
         new Date(a.properties.Date.date?.start)
     );
 
-  const jaPosts = publishedPosts.filter(
-    (el) => el.properties.Language.select.name === "ja"
+  const enPosts = publishedPosts.filter(
+    (el) => el.properties.Language.select.name === "en"
   );
   const recommendedPosts = publishedPosts.filter((el) =>
     el.properties.Tags.multi_select
@@ -155,7 +149,7 @@ export const getStaticProps = async () => {
   return {
     props: {
       externalPosts: externalDatabase,
-      posts: jaPosts,
+      posts: enPosts,
       recommendedPosts,
     },
     revalidate: 1,
