@@ -1,14 +1,14 @@
 import { Fragment } from "react";
 import Head from "next/head";
 import NextImage from "next/image";
-import { getDatabase, getPage, getBlocks } from "../lib/notion";
+import { getDatabase, getPage, getBlocks } from "../../lib/notion";
 import Link from "next/link";
 import { databaseId } from "./index.js";
-import styles from "./post.module.css";
+import styles from "./../post.module.css";
 import { CopyBlock, nord } from "react-code-blocks";
 import { HiExternalLink } from "react-icons/hi";
-import { SITE_NAME } from "../lib/constraints";
-import { imagePath, downloadImageIfNeed } from "../lib/saveImage";
+import { SITE_NAME } from "../../lib/constraints";
+import { imagePath, downloadImageIfNeed } from "../../lib/saveImage";
 let allPages = null;
 
 const getSlugFromId = (pageId) => {
@@ -20,7 +20,7 @@ const TextContent = (textValue) => {
   const { text } = textValue;
   if (textValue.type === "mention") {
     return (
-      <Link href={`/${getSlugFromId(textValue.mention.page.id)}`}>
+      <Link href={`/en/${getSlugFromId(textValue.mention.page.id)}`}>
         <a style={{ fontWeight: "bold", color: "black", fontSize: "1.1rem" }}>
           <HiExternalLink style={{ fontSize: "1.5rem" }} />
           <span>{textValue.plain_text} </span>
@@ -272,7 +272,7 @@ const Post = ({ page, blocks, database }) => {
           {blocks.map((block) => (
             <Fragment key={block.id}>{renderBlock(block)}</Fragment>
           ))}
-          <Link href="/">
+          <Link href="/en">
             <a className={styles.back}>← Go home</a>
           </Link>
         </section>
@@ -283,8 +283,6 @@ const Post = ({ page, blocks, database }) => {
 export default Post;
 
 export const getStaticPaths = async () => {
-  console.log("aaaaa");
-  console.log(databaseId);
   const database = await getDatabase(databaseId);
   return {
     paths: database
